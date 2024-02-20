@@ -15,7 +15,7 @@ function formatDate(date) {
   const year = date.getFullYear();
 
   // Hours, two digits with leading zero
-  const hours = date.getHours().toString().padStart(2, '0');
+  const hours = (date.getHours()-7).toString().padStart(2, '0');
 
   // Minutes, two digits with leading zero
   const minutes = date.getMinutes().toString().padStart(2, '0');
