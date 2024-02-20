@@ -3,6 +3,7 @@
 
 // init project
 var express = require('express');
+let helper = require("./helpers/Helper.js");
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -23,7 +24,24 @@ app.get("/", function (req, res) {
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
-
+app.get('/api/:date?', (req, res) => {
+  let dateObj;
+  if (req.params.date === undefined) {
+    dateObj = new Date();
+  } else if (isNaN(req.params.date)) {
+    dateObj = new Date(req.params.date);
+  } else {
+    dateObj = new Date(Number(req.params.date));
+  }
+  // let dateObj = new Date(dateParam||null);
+  let result;
+  if (dateObj.toString() == "Invalid Date") {
+    result = { "error": dateObj.toString() };
+  } else {
+    result = { "unix": dateObj.getTime(), "utc": helper.formatDate(dateObj) };
+  }
+  res.json(result);
+});
 
 
 // Listen on port set in environment variable or default to 3000
